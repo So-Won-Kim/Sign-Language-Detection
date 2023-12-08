@@ -21,7 +21,7 @@ def preprocess_image(img_path):
     img_array = preprocess_input(img_array)
     return img, img_array
 
-def predict_letter(model, img_array):
+def predict_letter(img_path):
     # Make predictions
     image = cv2.imread(img_path)
     new = cv2.rotate(image, rotateCode=0)
