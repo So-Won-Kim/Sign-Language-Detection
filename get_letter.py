@@ -4,6 +4,7 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
 import matplotlib.pyplot as plt
+import string
 
 def load_model():
     # Load your ASL model
@@ -24,6 +25,11 @@ def predict_letter(model, img_array):
     predicted_class = np.argmax(predictions)
     return predicted_class
 
+def map_to_actual_letter(predicted_class):
+    # Map predicted class to actual letter (assuming 0 = 'a', 1 = 'b', etc.)
+    actual_letter = string.ascii_lowercase[predicted_class]
+    return actual_letter
+
 def display_results(img, predicted_class):
     # Display results
     plt.imshow(img)
@@ -43,9 +49,12 @@ def main():
     predicted_class = predict_letter(model, img_array)
     display_results(img, predicted_class)
 
+    # Map predicted class to actual letter
+    actual_letter = map_to_actual_letter(predicted_class)
+
     # Append and save the result file
     with open(output_file, 'a') as f:
-        f.write(f'{predicted_class}')
+        f.write(f'{actual_letter}')
 
 if __name__ == "__main__":
     main()
