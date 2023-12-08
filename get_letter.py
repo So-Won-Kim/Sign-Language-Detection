@@ -31,15 +31,21 @@ def display_results(img, predicted_class):
     plt.show()
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python get_letter.py FILE_NAME.jpg")
+    if len(sys.argv) != 3:
+        print("Usage: python get_letter.py FILE_NAME.jpg output.txt")
         sys.exit(1)
 
     img_path = sys.argv[1]
+    output_file = sys.argv[2]
+    
     model = load_model()
     img, img_array = preprocess_image(img_path)
     predicted_class = predict_letter(model, img_array)
     display_results(img, predicted_class)
+
+    # Append and save the result file
+    with open(output_file, 'a') as f:
+        f.write(f'{predicted_class}')
 
 if __name__ == "__main__":
     main()
