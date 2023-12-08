@@ -35,11 +35,6 @@ def capture_frames(input_video_path, output_directory, motion_threshold):
     # Open the video file
     cap = cv2.VideoCapture(input_video_path)
 
-    # Get video properties
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
     average_bitrate = calculate_average_bitrate(input_video_path)
 
     frame_number = 0
@@ -56,11 +51,6 @@ def capture_frames(input_video_path, output_directory, motion_threshold):
 
         # Process the frame with mediapipe hands
         results = hands.process(rgb_frame)
-
-        # Check if hands are detected
-        if results.multi_hand_landmarks:
-            # Here you can add more logic or filters based on hand landmarks
-            pass
 
         # Calculate the current frame's bitrate
         current_bitrate = int(cap.get(cv2.CAP_PROP_BITRATE))
