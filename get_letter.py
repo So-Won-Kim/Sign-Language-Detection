@@ -4,6 +4,9 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
 import matplotlib.pyplot as plt
+import string
+import cv2
+import socket
 
 def load_model():
     # Load your ASL model
@@ -20,9 +23,13 @@ def preprocess_image(img_path):
 
 def predict_letter(model, img_array):
     # Make predictions
-    predictions = model.predict(img_array)
-    predicted_class = np.argmax(predictions)
-    return predicted_class
+    image = cv2.imread(img_path)
+    new = cv2.rotate(image, rotateCode=0)
+    gimage = cv2.cvtColor(new, cv2.COLOR_BGR2GRAY)
+    image28 = cv2.resize(gimage, (28, 28))
+    imagere = image28.reshape(1, 28, 28, 1)
+    onehot = model.predict_classes(imagere)
+    return output[onehot[0]]
 
 def display_results(img, predicted_class):
     # Display results
