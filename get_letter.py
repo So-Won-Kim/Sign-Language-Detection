@@ -4,9 +4,6 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
 import matplotlib.pyplot as plt
-import string
-import cv2
-import socket
 
 def load_model():
     # Load your ASL model
@@ -21,26 +18,17 @@ def preprocess_image(img_path):
     img_array = preprocess_input(img_array)
     return img, img_array
 
-def predict_letter(img_path):
+def predict_letter(model, img_array):
     # Make predictions
-    image = cv2.imread(img_path)
-    new = cv2.rotate(image, rotateCode=0)
-    gimage = cv2.cvtColor(new, cv2.COLOR_BGR2GRAY)
-    image28 = cv2.resize(gimage, (28, 28))
-    imagere = image28.reshape(1, 28, 28, 1)
-    onehot = model.predict_classes(imagere)
-    return output[onehot[0]]
+    predictions = model.predict(img_array)
+    predicted_class = np.argmax(predictions)
+    return predicted_class
 
 def display_results(img, predicted_class):
     # Display results
     plt.imshow(img)
     plt.title(f'Predicted ASL Sign: {predicted_class}')
     plt.show()
-
-def map_to_actual_letter(predicted_class):
-    # Map predicted class to actual letter (assuming 0 = 'a', 1 = 'b', etc.)
-    actual_letter = string.ascii_lowercase[predicted_class]
-    return actual_letter
 
 def main():
     if len(sys.argv) != 3:
@@ -55,12 +43,9 @@ def main():
     predicted_class = predict_letter(model, img_array)
     display_results(img, predicted_class)
 
-    # Map predicted class to actual letter
-    actual_letter = map_to_actual_letter(predicted_class)
-
     # Append and save the result file
     with open(output_file, 'a') as f:
-        f.write(f'{actual_letter}')
+        f.write(f'{predicted_class}')
 
 if __name__ == "__main__":
     main()
