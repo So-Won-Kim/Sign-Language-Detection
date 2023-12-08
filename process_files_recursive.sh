@@ -8,6 +8,6 @@ jpg_directory="./"
 
 for jpg_file in "$jpg_directory"/*.jpg; do
     if [ -f "$jpg_file" ]; then
-        python3 get_letter.py "$jpg_file"
+        python3 get_letter.py "$jpg_file" output.txt
     fi
 done
